@@ -1,61 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏷️ Heritage E-Commerce API (Laravel + Sanctum)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a simple backend API for a shoe e-commerce platform built with Laravel.
+It’s designed as a portfolio project to demonstrate RESTful API development, user authentication using Laravel Sanctum, and role-based access control for admin and regular users.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🧠 Project Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project provides essential e-commerce functionality through clean and secure API endpoints.
+Users can view products, while admins can manage product data including stock and images.
+The system uses token-based authentication (via Sanctum) and follows RESTful principles.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ⚙️ Key Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Authentication
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   User registration and login using Laravel Sanctum
+-   Token-based authentication for secure API access
+-   Role-based access (admin and user)
+-   Token revocation (logout)
+-   Retrieve logged-in user information via /me
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Products
 
-## Laravel Sponsors
+-   Full CRUD functionality (create, read, update, delete)
+-   Product image upload and validation
+-   Stock management for each product
+-   Public storage for uploaded images
+-   Cart & Checkout:
+    Users can add products to their cart
+-   Create orders and manage order status (pending, paid, shipped, completed)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🧩 Main Database Structure
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Users
 
-## Contributing
+id, name, email, password, role, timestamps
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Products
 
-## Code of Conduct
+id, name, price, stock, image, timestamps
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Orders
 
-## Security Vulnerabilities
+id, user_id, total_price, status, timestamps
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🔐 Roles & Permissions
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   Admin: Can create, update, and delete products
+-   User: Can view products and perform checkout actions
+
+---
+
+## 🧾 Main API Endpoints
+
+### Authentication
+
+-   POST /register — Register a new user
+-   POST /login — Authenticate user and return token
+-   POST /logout — Revoke token and logout
+-   GET /me — Get logged-in user data
+
+### Products
+
+-   GET /products — Get all products
+-   POST /products — Create a new product (admin only)
+-   GET /products/{id} — Get a single product by ID
+-   PUT /products/{id} — Update product details (admin only)
+-   DELETE /products/{id} — Delete a product (admin only)
+
+---
+
+## 🧱 Tech Stack
+
+-   Laravel 12.35.0
+-   Laravel Sanctum (API authentication)
+-   MySQL (database)
+-   PHP 8.4.10
+-   Postman (API testing)
+-   HeidiSQL (Local development environment for PHP and MySQL)
+-   Laragon (Database management tool for MySQL)
+
+---
+
+## 🎯 Project Purpose
+
+#### This project was built to strengthen backend development skills and demonstrate:
+
+-   RESTful API design principles in Laravel
+-   Authentication and authorization using Sanctum
+-   Media upload and file management in Laravel
+-   Relational database design with one-to-many relationships
