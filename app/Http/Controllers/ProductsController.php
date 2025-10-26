@@ -38,7 +38,6 @@ class ProductsController extends Controller
      * Store a newly created resource in storage.
      */
 
-    // FIXME: When posted description is null even tough description was included
     public function store(Request $request)
     {
         $request->validate([
@@ -101,38 +100,45 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      */
 
-    // FIXME: shows 200 OK but data is not changed
     public function update(Request $request, string $id)
     {
-        $product = Product::find($id);
-        if (!$product) {
-            return response()->json(['message' => 'Product does not exist'], 404);
-        }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image' => 'nullable|mime:jpg,jpeg,png|max:2048'
-        ]);
-
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                return response()->json(['message' => 'Product does not exist'], 404);
             }
-            $product->image = $request->file('image')->store('products', 'public');
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'image' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+            ]);
+
+            $data = $request->only(['name', 'description', 'price', 'stock']);
+
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('products', 'public');
+                $data['image'] = $imagePath;
+            }
+
+
+            $product->update($data);
+
+            $product->image_url = $product->image ? asset('storage/' . $product->image) : null;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product updated successfully',
+                'data' => $product,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
-
-        $product->update($request->except('image'));
-
-        $product->image_url = $product->image ? asset('/storage' . $product->image) : null;
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product updated successfully',
-            'data' => $product,
-        ], 200);
     }
 
     /**
