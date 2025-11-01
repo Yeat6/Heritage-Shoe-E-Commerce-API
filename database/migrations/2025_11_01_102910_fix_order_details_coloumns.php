@@ -11,8 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('order_details', function (Blueprint $table) {
-            $table->integer('quantity')->after('order_id');
-            $table->decimal('price', 10, 2)->after('quantity');
+            if (!Schema::hasColumn('order_details', 'quantity')) {
+                $table->integer('quantity');
+            }
+
+            if (!Schema::hasColumn('order_details', 'price')) {
+                $table->decimal('price', 10, 2);
+            }
         });
     }
 
@@ -22,7 +27,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('order_details', function (Blueprint $table) {
-            $table->dropColumn(['quantity', 'price']);
+            //
         });
     }
 };

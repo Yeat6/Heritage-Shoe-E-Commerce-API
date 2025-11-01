@@ -115,6 +115,15 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $cartItems = Cart::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $cartItems->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Item removed successfully',
+        ], 200);
     }
 }
